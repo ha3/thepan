@@ -1,0 +1,23 @@
+header nav {
+  border: 1px solid #007bff;
+  border-top: none;
+  border-radius: .25rem;
+}
+
+header a {
+  border-right: 1px solid #007bff;
+  border-radius: 0 !important;
+}
+
+header a:last-child {
+  border-right: none;
+}
+
+footer {
+  text-align: right;
+  font-style: italic;
+}
+
+form a:hover{
+  cursor: pointer;
+}

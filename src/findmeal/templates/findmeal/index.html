@@ -1,0 +1,9 @@
+{% extends 'findmeal/base.html' %}
+
+{% block content %}
+
+  {% for recipe in object_list %}
+    <h3>{{ recipe }}</h3>
+    <img src="{{ recipe.image.url }}" class="img-fluid" />
+  {% endfor %}
+{% endblock %}

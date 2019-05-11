@@ -4,20 +4,17 @@ from .models import Recipe, RecipeStep, RecipeIngredient, Ingredient, Ingredient
 
 # Register your models here.
 
+class RecipeIngredientInline(admin.TabularInline):
+    model = RecipeIngredient
+    extra = 3
+
+
 class RecipeStepInline(admin.StackedInline):
     model = RecipeStep
     extra = 3
 
-class RecipeIngredientInline(admin.StackedInline):
-    model = RecipeIngredient
-    extra = 3
-
 class RecipeAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (None,               {'fields': ['name']}),
-    ]
-
-    inlines = [RecipeIngredientInline, RecipeStepInline]
+    inlines = [RecipeStepInline, RecipeIngredientInline]
 
 
 admin.site.register(Recipe, RecipeAdmin)
