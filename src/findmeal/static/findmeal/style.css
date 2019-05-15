@@ -29,3 +29,12 @@ form a:hover{
 .nav-link:focus, .nav-link:hover {
   background-color: #f8f9fa;
 }
+
+.fa {
+  font-size: 25px;
+  cursor: pointer;
+}
+
+.checked {
+  color: orange;
+}

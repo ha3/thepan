@@ -15,11 +15,21 @@
             Featured
           </div>
           <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>Prep:</strong></li>
-            <li class="list-group-item"><strong>Cost:</strong></li>
-            <li class="list-group-item"><strong>Servings:</strong></li>
-            <li class="list-group-item"><strong>Ratings:</strong></li>
-            <li class="list-group-item"><strong>Calories:</strong></li>
+            <li class="list-group-item"><strong>Prep:</strong>   {{ recipe.prep_time }}</li>
+            <li class="list-group-item"><strong>Cost:</strong>   $$$</li>
+            <li class="list-group-item"><strong>Servings:</strong>   {{ recipe.servings }}</li>
+            <li class="list-group-item"><strong>Ratings:</strong>
+              <div class="stars stars-example-css">
+                <select id="example-css" name="rating">
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3">3</option>
+                  <option value="4">4</option>
+                  <option value="5">5</option>
+                </select>
+              </div>
+            </li>
+            <li class="list-group-item"><strong>Calories:</strong>   {{ recipe.calories }}</li>
           </ul>
         </div>
       </div>
