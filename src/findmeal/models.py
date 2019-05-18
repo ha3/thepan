@@ -1,9 +1,11 @@
 from django.db import models
+from django.urls import reverse
+from django.utils.text import slugify
 
-# Create your models here.
 
 class Recipe(models.Model):
     name = models.CharField(max_length=100)
+    slug = models.SlugField(default='', editable=False, max_length=100)
     image = models.ImageField(upload_to='recipe')
     prep = models.IntegerField()
     serving = models.IntegerField()
@@ -13,6 +15,18 @@ class Recipe(models.Model):
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        kwargs = {
+            'pk': self.id,
+            'slug': self.slug
+        }
+
+        return reverse('findmeal:detail', kwargs=kwargs)
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name, allow_unicode=True)
+        super().save(*args, **kwargs)
 
     def prep_time(self):
         hours = self.prep // 60

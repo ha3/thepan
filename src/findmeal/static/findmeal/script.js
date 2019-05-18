@@ -41,12 +41,11 @@ $(document).ready(function() {
     step_size: 1,
     cursor: 'pointer',
     ajax_method: 'POST',
-    url: '../../' + $("#recipe-id").val() + '/rate/',
+    url: '../../../' + $("#recipe-id").val() + '/rate/',
     initial_value: roundHalf($("#current-rating").val()),
   }
 
   $(".rate").rate(options);
-
   $(".rate").on("updateSuccess", function(ev, data){
     $(".rate").rate("setValue", roundHalf(data), 1);
   });

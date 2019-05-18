@@ -16,6 +16,12 @@ class IndexView(ListView):
         return data
 
 
+class DetailView(DetailView):
+    model = Recipe
+    template_name = 'findmeal/detail.html'
+    query_pk_and_slug = True
+
+
 def rate(request, recipe_id):
 
     recipe = get_object_or_404(Recipe, pk=recipe_id)
