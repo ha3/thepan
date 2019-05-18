@@ -7,8 +7,8 @@ class Recipe(models.Model):
     image = models.ImageField(upload_to='recipe')
     prep = models.IntegerField()
     serving = models.IntegerField()
-    rating = models.IntegerField(null=True, blank=True)
-    rateuser = models.IntegerField(null=True, blank=True)
+    rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True, default=0)
+    rateuser = models.IntegerField(null=True, blank=True, default=0)
     calorie = models.IntegerField()
 
     def __str__(self):

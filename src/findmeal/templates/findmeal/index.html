@@ -4,6 +4,8 @@
 
   {% for recipe in object_list %}
     <h3>{{ recipe }}</h3>
+    <input type="hidden" value="{{ recipe.id }}" id="recipe-id" />
+    <input type="hidden" value="{{ recipe.rating }}" id="current-rating" />
     <br />
     <div class="row">
       <div class="col">
@@ -17,19 +19,11 @@
           <ul class="list-group list-group-flush">
             <li class="list-group-item"><strong>Prep:</strong>   {{ recipe.prep_time }}</li>
             <li class="list-group-item"><strong>Cost:</strong>   $$$</li>
-            <li class="list-group-item"><strong>Servings:</strong>   {{ recipe.servings }}</li>
+            <li class="list-group-item"><strong>Servings:</strong>   {{ recipe.serving }}</li>
             <li class="list-group-item"><strong>Ratings:</strong>
-              <div class="stars stars-example-css">
-                <select id="example-css" name="rating">
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                  <option value="5">5</option>
-                </select>
-              </div>
+              <div class="rate"></div>
             </li>
-            <li class="list-group-item"><strong>Calories:</strong>   {{ recipe.calories }}</li>
+            <li class="list-group-item"><strong>Calories:</strong>   {{ recipe.calorie }}</li>
           </ul>
         </div>
       </div>

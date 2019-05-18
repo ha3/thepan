@@ -30,11 +30,15 @@ form a:hover{
   background-color: #f8f9fa;
 }
 
-.fa {
-  font-size: 25px;
-  cursor: pointer;
+.rate {
+  font-size: 35px;
+  font-family: sans-serif;
 }
 
-.checked {
+.rate-base-layer {
+  color: #aaa;
+}
+
+.rate-hover-layer {
   color: orange;
 }
