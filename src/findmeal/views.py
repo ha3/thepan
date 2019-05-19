@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
-from .models import Recipe
+from .models import Recipe, Ingredient
 
 # Create your views here.
 
@@ -23,13 +23,20 @@ class DetailView(DetailView):
 
 
 def rate(request, recipe_id):
+    if request.is_ajax():
+        recipe = get_object_or_404(Recipe, pk=recipe_id)
+        rating = int(request.POST['value'])
 
-    recipe = get_object_or_404(Recipe, pk=recipe_id)
+        recipe.rating = (recipe.rating * recipe.rateuser + rating) / (recipe.rateuser + 1)
+        recipe.rateuser += 1
+        recipe.save()
 
-    rating = int(request.POST['value'])
+        return HttpResponse(recipe.rating)
 
-    recipe.rating = (recipe.rating * recipe.rateuser + rating) / (recipe.rateuser + 1)
-    recipe.rateuser += 1
-    recipe.save()
 
-    return HttpResponse(recipe.rating)
+def listIngredients(request):
+    if request.is_ajax():
+        name = request.POST['name']
+
+        ingredients = Ingredient.objects.filter(name__startswith=name)
+        return JsonResponse([ingredient.name for ingredient in ingredients], safe=False)

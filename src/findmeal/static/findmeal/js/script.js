@@ -26,7 +26,6 @@ function roundHalf(num) {
     return Math.round(parseFloat(num)*2)/2;
 }
 
-
 $(document).ready(function() {
   $.ajaxSetup({
       beforeSend: function(xhr, settings) {
@@ -41,11 +40,12 @@ $(document).ready(function() {
     step_size: 1,
     cursor: 'pointer',
     ajax_method: 'POST',
-    url: '../../../' + $("#recipe-id").val() + '/rate/',
+    url: '../../../../' + $("#recipe-id").val() + '/rate/',
     initial_value: roundHalf($("#current-rating").val()),
   }
 
   $(".rate").rate(options);
+
   $(".rate").on("updateSuccess", function(ev, data){
     $(".rate").rate("setValue", roundHalf(data), 1);
   });
@@ -54,4 +54,7 @@ $(document).ready(function() {
     alert("Bir hata oluştu; lütfen daha sonra tekrar deneyin!");
   });
 
+  if(document.getElementById("search-ingredient") != null) {
+    autocomplete(document.getElementById("search-ingredient"))
+  }
 });
