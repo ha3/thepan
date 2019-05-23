@@ -72,14 +72,30 @@ footer {
   border-bottom: 1px solid #d4d4d4;
 }
 
-.autocomplete-items div:hover {
-  background-color: DodgerBlue !important;
-  color: white;
-}
 
 .autocomplete-active {
   background-color: DodgerBlue !important;
   color: #ffffff;
+}
+
+.close-ingredient {
+  position: absolute;
+  top: 0;
+  right: 0;
+  outline: none !important;
+}
+
+.ing-item {
+  margin-right: 20px;
+}
+
+#content {
+  margin: 100px 0;
+  height: 66px;
+}
+
+#search-button {
+  margin: 0 auto;
 }
 
 

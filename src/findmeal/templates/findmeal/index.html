@@ -1,28 +1,26 @@
 {% extends 'findmeal/base.html' %}
 
-{% block title %}{{ block.super }} - Ana Sayfa{% endblock %}
+{% block title %}{{ block.super }} - Ana Sayfa {% endblock %}
 
 {% block content %}
 <div class="row">
   <form autocomplete="off" id="s-ing">
-    <div class="autocomplete">
+    <div class="autocomplete" id="otto">
       <input type="text" id="search-ingredient" class="form-control" name="ingredient"
       placeholder="Elindeki malzemeleri yazmaya başla..." aria-label="Malzemeler" aria-describedby="basic-addon2" />
     </div>
   </form>
 </div>
 
-<!--
-<div class="row">
-  <div class="card card-outline-danger text-center ">
-    <span class="pull-right clickable close-icon" data-effect="fadeOut"><i class="fa fa-times"></i></span>
-    <div class="card-block">
-      <blockquote class="card-blockquote">
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
-        <footer>Someone famous in <cite title="Source Title">Source Title</cite></footer>
-      </blockquote>
-    </div>
+<!--<form action="{% url 'findmeal:search' %}" method="get">-->
+  <div class="row" id="content">
+
   </div>
-</div>
--->
+
+  <div class="row">
+    <button type="button" id="search-button" class="btn btn-lg btn-primary" disabled>Tarif Ara</button>
+  </div>
+<!--</form>-->
+
+
 {% endblock %}

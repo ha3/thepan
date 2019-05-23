@@ -11,7 +11,7 @@ function autocomplete(inp) {
     $.ajax({
       url: '/listing/',
       method: 'POST',
-      data: {name: val},
+      data: {name: val.toUpperCase()},
       success: function(data, textStatus, jQxhr) {
         arr = data;
 
@@ -31,6 +31,7 @@ function autocomplete(inp) {
           if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
             /*create a DIV element for each matching element:*/
             b = document.createElement("DIV");
+            b.setAttribute("class", "autocomplete-item");
             /*make the matching letters bold:*/
             b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
             b.innerHTML += arr[i].substr(val.length);
@@ -84,6 +85,15 @@ function autocomplete(inp) {
     }
   });
 
+  $(document).on({
+    mouseenter: function () {
+        $(this).addClass("autocomplete-active");
+    },
+    mouseleave: function () {
+        $(this).removeClass("autocomplete-active");
+    }
+  }, ".autocomplete-item");
+
   function addActive(x) {
     /*a function to classify an item as "active":*/
     if (!x) return false;
@@ -116,5 +126,6 @@ function autocomplete(inp) {
   /*execute a function when someone clicks in the document:*/
   document.addEventListener("click", function (e) {
     closeAllLists(e.target);
+    inp.value = '';
   });
 }
