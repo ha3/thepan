@@ -42,7 +42,7 @@ $(document).ready(function() {
     step_size: 1,
     cursor: 'pointer',
     ajax_method: 'POST',
-    url: '../../../../' + $("#recipe-id").val() + '/rate/',
+    url: '/' + $("#recipe-id").val() + '/rate/',
     initial_value: roundHalf($("#current-rating").val()),
   }
 
@@ -83,7 +83,7 @@ $(document).ready(function() {
             $.el('p', {'class': 'card-text'}).text(ingredientName)
           )
           .append(
-            $.el('input', {'type': 'hidden', 'name': 'ingname', 'class': 'ingredient', 'value': ingredientName})
+            $.el('input', {'type': 'hidden', 'name': 'i', 'class': 'ingredient', 'value': ingredientName})
           )
         )
       );
@@ -108,16 +108,6 @@ $(document).ready(function() {
       $("#search-button").prop("disabled", true);
     }
 
-  });
-
-  $("#fakForm").submit(function (e) {
-    e.preventDefault();
-    var vals = [];
-    $(".ingredient").each(function() {
-      vals.push($(this).val());
-    });
-    $("#inggname").val(vals.join("-"));
-    $("#manForm").submit();
   });
 
   $(".list-group > a").hover(function() {

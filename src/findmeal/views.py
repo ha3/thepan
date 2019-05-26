@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, TemplateView
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 
 from .models import Recipe, Ingredient, RecipeIngredient
 
@@ -26,9 +26,7 @@ class SearchView(ListView):
     context_object_name = 'recipe_list'
 
     def get_queryset(self):
-        query = self.request.GET.get('ingname')
-
-        ingredients = query.split('-')
+        ingredients = self.request.GET.getlist('i')
 
         ingredient_ids = [Ingredient.objects.get(name__iexact=ingredient) for ingredient in ingredients]
         recipe_ids = RecipeIngredient.objects.filter(ingredient__in=ingredient_ids).values_list('recipe', flat=True).distinct()

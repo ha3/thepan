@@ -12,19 +12,13 @@
   </form>
 </div>
 
-<form id="fakForm">
+<form action="{% url 'findmeal:search' %}" method="get">
   <div class="row" id="content">
   </div>
 
   <div class="row">
     <button type="submit" id="search-button" class="btn btn-lg btn-primary" disabled>Tarif Ara</button>
   </div>
-</form>
-
-
-<form action="{% url 'findmeal:search' %}" method="get" id="manForm" style="display:none;">
-  <input type="hidden" name="ingname" id="inggname" value="">
-  <input type="submit" hidden="true" value="Submit">
 </form>
 
 {% endblock %}
