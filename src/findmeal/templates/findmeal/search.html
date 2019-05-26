@@ -1,0 +1,23 @@
+{% extends 'findmeal/base.html' %}
+
+{% block content %}
+  {% if recipe_list %}
+
+  <h3>Recipe List:</h3>
+  <div class="list-group">
+		{% for recipe in recipe_list %}
+      <a href="{{ recipe.get_absolute_url }}" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">
+            {{ recipe }}
+          </h5>
+          <small>{{ recipe.calorie }}</small>
+        </div>
+      </a>
+		{% endfor %}
+	</div>
+
+  {% else %}
+  <p>No recipes are available.</p>
+  {% endif %}
+{% endblock %}
