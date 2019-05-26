@@ -26,6 +26,7 @@ function roundHalf(num) {
     return Math.round(parseFloat(num)*2)/2;
 }
 
+var pan = [];
 
 $(document).ready(function() {
   $.ajaxSetup({
@@ -41,11 +42,12 @@ $(document).ready(function() {
     step_size: 1,
     cursor: 'pointer',
     ajax_method: 'POST',
-    url: '../../../' + $("#recipe-id").val() + '/rate/',
+    url: '../../../../' + $("#recipe-id").val() + '/rate/',
     initial_value: roundHalf($("#current-rating").val()),
   }
 
   $(".rate").rate(options);
+
   $(".rate").on("updateSuccess", function(ev, data){
     $(".rate").rate("setValue", roundHalf(data), 1);
   });
@@ -53,5 +55,57 @@ $(document).ready(function() {
   $(".rate").on("updateError", function(ev, jxhr, msg, err){
     alert("Bir hata oluştu; lütfen daha sonra tekrar deneyin!");
   });
+
+  if(document.getElementById("search-ingredient") != null) {
+    autocomplete(document.getElementById("search-ingredient"));
+  }
+
+  $.extend({
+    el: function(el, props) {
+        var $el = $(document.createElement(el));
+        $el.attr(props);
+        return $el;
+    }
+  });
+
+  function generateItem(ingredientName) {
+    if(pan.includes(ingredientName) == false) {
+      pan.push(ingredientName);
+
+      $("#content").append(
+        $.el('div', {'class': 'card bg-light ing-item'}).append(
+          $.el('div', {'class': 'card-body position-relative'}).append(
+            $.el('button', {'class': 'close close-ingredient', 'aria-label': 'Close'}).append(
+               $.el('span', {'aria-hidden': 'true'}).html('&times;')
+            )
+          )
+          .append(
+            $.el('p', {'class': 'card-text'}).text(ingredientName)
+          )
+        )
+      );
+    }
+  }
+
+  $(document).on("click", "div.autocomplete-item", function() {
+      var ingName = $(this).children("input[type=hidden]").val()
+      generateItem(ingName);
+      $("#search-button").prop("disabled", false);
+  });
+
+  $("#content").on("click", ".close-ingredient", function() {
+    $(this).parent().parent().fadeOut(300, function() { $(this).remove(); });
+    var ing = $(this).next().text();
+    var index = pan.indexOf(ing);
+    if (index > -1) {
+      pan.splice(index, 1);
+    }
+    if(!pan.length) {
+      $("#search-button").prop("disabled", true);
+    }
+
+  });
+
+
 
 });

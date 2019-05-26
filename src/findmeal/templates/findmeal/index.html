@@ -1,76 +1,26 @@
 {% extends 'findmeal/base.html' %}
 
+{% block title %}{{ block.super }} - Ana Sayfa {% endblock %}
+
 {% block content %}
-
-  {% for recipe in object_list %}
-    <h3>{{ recipe }}</h3>
-    <input type="hidden" value="{{ recipe.id }}" id="recipe-id" />
-    <input type="hidden" value="{{ recipe.rating }}" id="current-rating" />
-    <br />
-    <div class="row">
-      <div class="col">
-        <img src="{{ recipe.image.url }}" class="img-thumbnail" />
-      </div>
-      <div class="col">
-        <div class="card" style="width: 18rem;">
-          <div class="card-header">
-            Featured
-          </div>
-          <ul class="list-group list-group-flush">
-            <li class="list-group-item"><strong>Prep:</strong>   {{ recipe.prep_time }}</li>
-            <li class="list-group-item"><strong>Cost:</strong>   $$$</li>
-            <li class="list-group-item"><strong>Servings:</strong>   {{ recipe.serving }}</li>
-            <li class="list-group-item"><strong>Ratings:</strong>
-              <div class="rate"></div>
-            </li>
-            <li class="list-group-item"><strong>Calories:</strong>   {{ recipe.calorie }}</li>
-          </ul>
-        </div>
-      </div>
+<div class="row">
+  <form autocomplete="off" id="s-ing">
+    <div class="autocomplete" id="otto">
+      <input type="text" id="search-ingredient" class="form-control" name="ingredient"
+      placeholder="Elindeki malzemeleri yazmaya başla..." aria-label="Malzemeler" aria-describedby="basic-addon2" />
     </div>
+  </form>
+</div>
 
-    <br />
-    <br />
+<!--<form action="{% url 'findmeal:search' %}" method="get">-->
+  <div class="row" id="content">
 
-    <div class="row">
-      <div class="col">
-        <h4>Ingredients</h4>
-        <br />
+  </div>
 
-        <ul class="list-group list-group-flush">
-          {% for ingredient in recipe.recipeingredient_set.all %}
-          <li class="list-group-item">
-            <div class="custom-control custom-checkbox mr-sm-2">
-              <input type="checkbox" name="cjeck" class="custom-control-input" id="customControlAutosizing{{ forloop.counter }}" />
-              <label class="custom-control-label" for="customControlAutosizing{{ forloop.counter }}">
-                {{ ingredient.ingredient }}
-              </label>
-            </div>
-          </li>
-          {% endfor %}
-        </ul>
-      </div>
-      <div class="col">
-      </div>
-    </div>
+  <div class="row">
+    <button type="button" id="search-button" class="btn btn-lg btn-primary" disabled>Tarif Ara</button>
+  </div>
+<!--</form>-->
 
-    <br />
-    <br />
 
-    <div class="row">
-      <div class="col">
-        <h4>Directions</h4>
-        <br />
-
-        {% for step in recipe.recipestep_set.all %}
-        <p><strong>Step {{ forloop.counter }}</strong></p>
-        <hr />
-        <p>{{ step.instructions }}</p>
-        {% endfor %}
-      </div>
-      <div class="col">
-      </div>
-    </div>
-
-  {% endfor %}
 {% endblock %}
