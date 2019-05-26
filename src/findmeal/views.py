@@ -1,13 +1,12 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, TemplateView
 from django.http import HttpResponse
 
 from .models import Recipe
 
 # Create your views here.
 
-class IndexView(ListView):
-    model = Recipe
+class IndexView(TemplateView):
     template_name = 'findmeal/index.html'
 
     def get_context_data(self, **kwargs):
