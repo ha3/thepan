@@ -87,6 +87,7 @@ footer {
 
 .ing-item {
   margin-right: 20px;
+  height: inherit;
 }
 
 #content {

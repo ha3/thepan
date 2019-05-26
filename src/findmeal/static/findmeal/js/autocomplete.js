@@ -11,7 +11,7 @@ function autocomplete(inp) {
     $.ajax({
       url: '/listing/',
       method: 'POST',
-      data: {name: val.toUpperCase()},
+      data: {name: val},
       success: function(data, textStatus, jQxhr) {
         arr = data;
 

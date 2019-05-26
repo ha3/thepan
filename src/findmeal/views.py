@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView
 from django.http import HttpResponse, JsonResponse
+from django.template import loader
 
-from .models import Recipe, Ingredient
+from .models import Recipe, Ingredient, RecipeIngredient
 
 # Create your views here.
 
@@ -22,6 +23,21 @@ class DetailView(DetailView):
     query_pk_and_slug = True
 
 
+class SearchView(ListView):
+    template_name = 'findmeal/search.html'
+    context_object_name = 'recipe_list'
+
+    def get_queryset(self):
+        query = self.request.GET.get('ingname')
+
+        ingredients = query.split('-')
+
+        ingredient_ids = [Ingredient.objects.get(name__iexact=ingredient) for ingredient in ingredients]
+        recipe_ids = RecipeIngredient.objects.filter(ingredient__in=ingredient_ids).values_list('recipe', flat=True).distinct()
+
+        return Recipe.objects.filter(id__in=recipe_ids)
+
+
 def rate(request, recipe_id):
     if request.is_ajax():
         recipe = get_object_or_404(Recipe, pk=recipe_id)
@@ -34,9 +50,9 @@ def rate(request, recipe_id):
         return HttpResponse(recipe.rating)
 
 
-def listIngredients(request):
+def ListIngredients(request):
     if request.is_ajax():
-        name = request.POST['name']
+        name = request.POST['name'].capitalize()
 
         ingredients = Ingredient.objects.filter(name__startswith=name)
         return JsonResponse([ingredient.name for ingredient in ingredients], safe=False)

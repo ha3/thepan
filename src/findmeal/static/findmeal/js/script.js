@@ -82,6 +82,9 @@ $(document).ready(function() {
           .append(
             $.el('p', {'class': 'card-text'}).text(ingredientName)
           )
+          .append(
+            $.el('input', {'type': 'hidden', 'name': 'ingname', 'class': 'ingredient', 'value': ingredientName})
+          )
         )
       );
     }
@@ -93,7 +96,8 @@ $(document).ready(function() {
       $("#search-button").prop("disabled", false);
   });
 
-  $("#content").on("click", ".close-ingredient", function() {
+  $("#content").on("click", ".close-ingredient", function(e) {
+    e.preventDefault();
     $(this).parent().parent().fadeOut(300, function() { $(this).remove(); });
     var ing = $(this).next().text();
     var index = pan.indexOf(ing);
@@ -106,6 +110,18 @@ $(document).ready(function() {
 
   });
 
+  $("#fakForm").submit(function (e) {
+    e.preventDefault();
+    var vals = [];
+    $(".ingredient").each(function() {
+      vals.push($(this).val());
+    });
+    $("#inggname").val(vals.join("-"));
+    $("#manForm").submit();
+  });
 
+  $(".list-group > a").hover(function() {
+    $(this).toggleClass("active");
+  })
 
 });
