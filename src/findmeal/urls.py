@@ -1,6 +1,7 @@
 from django.urls import path
 
 from . import views
+from django.contrib.flatpages import views as flat_views
 
 app_name = 'findmeal'
 
@@ -10,5 +11,6 @@ urlpatterns = [
     path('search/', views.SearchView.as_view(), name='search'),
     path('recipes/', views.RecipesView.as_view(), name='recipes'),
     path('<int:recipe_id>/rate/', views.rate, name='rate'),
-    path('listing/', views.ListIngredients, name='listing')
+    path('listing/', views.ListIngredients, name='listing'),
+    path('about/', flat_views.flatpage, {'url': '/about/'}, name='about')
 ]

@@ -33,7 +33,7 @@
       <div class="container">
         <nav class="nav nav-pills flex-column flex-sm-row">
           <a class="flex-sm-fill text-sm-center nav-link {{ home_page }}" href="{% url 'findmeal:index' %}">Home</a>
-          <a class="flex-sm-fill text-sm-center nav-link" href="#">About</a>
+          <a class="flex-sm-fill text-sm-center nav-link {% if request.path == '/about/' %}active{% endif %}" href="{% url 'findmeal:about' %}">About</a>
           <a class="flex-sm-fill text-sm-center nav-link {{ recipes }}" href="{% url 'findmeal:recipes' %}">Recipes</a>
           <a class="flex-sm-fill text-sm-center nav-link" href="#">Contact Us</a>
         </nav>
