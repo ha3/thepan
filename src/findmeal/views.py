@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, TemplateView
 from django.http import HttpResponse, JsonResponse
+from django.db.models.functions import Upper
 
 from .models import Recipe, Ingredient, RecipeIngredient
 
@@ -34,6 +35,19 @@ class SearchView(ListView):
         return Recipe.objects.filter(id__in=recipe_ids)
 
 
+class RecipesView(ListView):
+    template_name = 'findmeal/recipes.html'
+    context_object_name = 'recipes_list'
+
+    def get_queryset(self):
+        return Recipe.objects.all().order_by('-id')
+
+    def get_context_data(self, **kwargs):
+        data = super().get_context_data(*kwargs)
+        data['recipes'] = 'active'
+        return data
+
+
 def rate(request, recipe_id):
     if request.is_ajax():
         recipe = get_object_or_404(Recipe, pk=recipe_id)
@@ -50,5 +64,5 @@ def ListIngredients(request):
     if request.is_ajax():
         name = request.POST['name'].capitalize()
 
-        ingredients = Ingredient.objects.filter(name__startswith=name)
+        ingredients = Ingredient.objects.filter(name__icontains=name)
         return JsonResponse([ingredient.name for ingredient in ingredients], safe=False)

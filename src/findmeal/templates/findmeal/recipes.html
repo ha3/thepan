@@ -1,0 +1,17 @@
+{% extends 'findmeal/base.html' %}
+
+{% block content %}
+  <h3>Recipe List:</h3>
+  <div class="list-group">
+		{% for recipe in recipes_list %}
+      <a href="{{ recipe.get_absolute_url }}" class="list-group-item list-group-item-action">
+        <div class="d-flex w-100 justify-content-between">
+          <h5 class="mb-1">
+            {{ recipe }}
+          </h5>
+          <small>{{ recipe.calorie }}</small>
+        </div>
+      </a>
+		{% endfor %}
+	</div>
+{% endblock %}
