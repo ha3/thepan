@@ -1,0 +1,16 @@
+{% extends 'findmeal/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}{{ block.super }} - Contact Us {% endblock %}
+
+{% block content %}
+<h2>Bize Yazın</h2>
+<hr />
+
+<form action="/contact/" method="post" novalidate>
+    {% csrf_token %}
+    {{ form|crispy }}
+
+    <input type="submit" class="btn btn-primary float-right" value="Gönder">
+</form>
+{% endblock %}

@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, TemplateView
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.db.models.functions import Upper
 
 from .models import Recipe, Ingredient, RecipeIngredient
+from .forms import ContactForm
 
 # Create your views here.
 
@@ -47,6 +48,26 @@ class RecipesView(ListView):
         data['recipes'] = 'active'
         return data
 
+
+def ContactView(request):
+    if request.method == 'POST':
+        form = ContactForm(request.POST)
+
+        if form.is_valid():
+            full_name = form.cleaned_data['full_name']
+            sender = form.cleaned_data['email']
+            subject = form.cleaned_data['subject']
+            message = form.cleaned_data['message']
+
+            recipients = ['h.ozdemir@yandex.com']
+
+            send_mail(subject, message + sender, sender, recipients)
+            return HttpResponseRedirect('/about/')
+
+    else:
+        form = ContactForm()
+
+    return render(request, 'findmeal/contact.html', {'form': form, 'contact': 'active'})
 
 def rate(request, recipe_id):
     if request.is_ajax():
