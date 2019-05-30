@@ -1,14 +1,14 @@
 from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView, TemplateView
+from django.views import generic, View
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.db.models.functions import Upper
+from django.core.mail import send_mail
 
 from .models import Recipe, Ingredient, RecipeIngredient
 from .forms import ContactForm
 
 # Create your views here.
 
-class IndexView(TemplateView):
+class IndexView(generic.TemplateView):
     template_name = 'findmeal/index.html'
 
     def get_context_data(self, **kwargs):
@@ -17,13 +17,13 @@ class IndexView(TemplateView):
         return data
 
 
-class DetailView(DetailView):
+class DetailView(generic.DetailView):
     model = Recipe
     template_name = 'findmeal/detail.html'
     query_pk_and_slug = True
 
 
-class SearchView(ListView):
+class SearchView(generic.ListView):
     template_name = 'findmeal/search.html'
     context_object_name = 'recipe_list'
 
@@ -36,7 +36,7 @@ class SearchView(ListView):
         return Recipe.objects.filter(id__in=recipe_ids)
 
 
-class RecipesView(ListView):
+class RecipesView(generic.ListView):
     template_name = 'findmeal/recipes.html'
     context_object_name = 'recipes_list'
 
@@ -49,13 +49,16 @@ class RecipesView(ListView):
         return data
 
 
-def ContactView(request):
-    if request.method == 'POST':
-        form = ContactForm(request.POST)
+class ContactView(View):
+    form_class = ContactForm
+    template_name = 'findmeal/contact.html'
+
+    def post(self, request, *args, **kwargs):
+        form = self.form_class(request.POST)
 
         if form.is_valid():
             full_name = form.cleaned_data['full_name']
-            sender = form.cleaned_data['email']
+            sender = form.cleaned_data['sender']
             subject = form.cleaned_data['subject']
             message = form.cleaned_data['message']
 
@@ -64,10 +67,12 @@ def ContactView(request):
             send_mail(subject, message + sender, sender, recipients)
             return HttpResponseRedirect('/about/')
 
-    else:
-        form = ContactForm()
+        return render(request, self.template_name, {'form': form, 'contact': 'active'})
 
-    return render(request, 'findmeal/contact.html', {'form': form, 'contact': 'active'})
+    def get(self, request, *args, **kwargs):
+        form = self.form_class()
+
+        return render(request, self.template_name, {'form': form, 'contact': 'active'})
 
 def rate(request, recipe_id):
     if request.is_ajax():
