@@ -16,6 +16,10 @@ class Recipe(models.Model):
     def __str__(self):
         return self.name
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name, allow_unicode=True)
+        super().save(*args, **kwargs)
+
     def get_absolute_url(self):
         kwargs = {
             'pk': self.id,
@@ -24,13 +28,9 @@ class Recipe(models.Model):
 
         return reverse('findmeal:detail', kwargs=kwargs)
 
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name, allow_unicode=True)
-        super().save(*args, **kwargs)
-
-    def prep_time(self):
-        hours = self.prep // 60
-        minutes = self.prep % 60
+    def show_prep_time(self):
+        hours = self.prep_time // 60
+        minutes = self.prep_time % 60
 
         if minutes == 0: # Check if it is a full hour
             return str(hours) + ' saat'

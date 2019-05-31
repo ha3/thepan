@@ -6,7 +6,6 @@ from django.core.mail import send_mail
 from .models import Recipe, Ingredient, RecipeIngredient
 from .forms import ContactForm
 
-# Create your views here.
 
 class IndexView(generic.TemplateView):
     template_name = 'findmeal/index.html'
