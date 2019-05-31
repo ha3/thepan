@@ -11,7 +11,7 @@ urlpatterns = [
     path('search/', views.SearchView.as_view(), name='search'),
     path('recipes/', views.RecipesView.as_view(), name='recipes'),
     path('contact/', views.ContactView.as_view(), name='contact'),
+    path('listing/', views.ListIngredients.as_view(), name='listing'),
     path('<int:recipe_id>/rate/', views.rate, name='rate'),
-    path('listing/', views.ListIngredients, name='listing'),
     path('about/', flat_views.flatpage, {'url': '/about/'}, name='about')
 ]

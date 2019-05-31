@@ -74,6 +74,16 @@ class ContactView(View):
 
         return render(request, self.template_name, {'form': form, 'contact': 'active'})
 
+
+class ListIngredients(View):
+    def post(self, request):
+        if request.is_ajax():
+            name = request.POST['name'].capitalize()
+
+            ingredients = Ingredient.objects.filter(name__icontains=name)
+            return JsonResponse([ingredient.name for ingredient in ingredients], safe=False)
+
+
 def rate(request, recipe_id):
     if request.is_ajax():
         recipe = get_object_or_404(Recipe, pk=recipe_id)
@@ -84,11 +94,3 @@ def rate(request, recipe_id):
         recipe.save()
 
         return HttpResponse(recipe.rating)
-
-
-def ListIngredients(request):
-    if request.is_ajax():
-        name = request.POST['name'].capitalize()
-
-        ingredients = Ingredient.objects.filter(name__icontains=name)
-        return JsonResponse([ingredient.name for ingredient in ingredients], safe=False)
