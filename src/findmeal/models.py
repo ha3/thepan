@@ -7,10 +7,10 @@ class Recipe(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(default='', editable=False, max_length=100)
     image = models.ImageField(upload_to='recipe')
-    prep = models.IntegerField()
+    prep_time = models.IntegerField()
     serving = models.IntegerField()
     rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True, default=0)
-    rateuser = models.IntegerField(null=True, blank=True, default=0)
+    rate_count = models.IntegerField(null=True, blank=True, default=0)
     calorie = models.IntegerField()
 
     def __str__(self):
@@ -39,12 +39,14 @@ class Recipe(models.Model):
         else:
             return str(minutes) + ' dakika'
 
+
 class IngredientType(models.Model):
     name = models.CharField(max_length=20)
     description = models.CharField(max_length=150)
 
     def __str__(self):
         return self.name
+
 
 class Ingredient(models.Model):
     type = models.ForeignKey(IngredientType, on_delete=models.CASCADE)
@@ -53,12 +55,14 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.name
 
+
 class RecipeStep(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     instructions = models.TextField()
 
     def __str__(self):
         return str(self.recipe)
+
 
 class RecipeIngredient(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)

@@ -89,8 +89,8 @@ def rate(request, recipe_id):
         recipe = get_object_or_404(Recipe, pk=recipe_id)
         rating = int(request.POST['value'])
 
-        recipe.rating = (recipe.rating * recipe.rateuser + rating) / (recipe.rateuser + 1)
-        recipe.rateuser += 1
+        recipe.rating = (recipe.rating * recipe.rate_count + rating) / (recipe.rate_count + 1)
+        recipe.rate_count += 1
         recipe.save()
 
         return HttpResponse(recipe.rating)
