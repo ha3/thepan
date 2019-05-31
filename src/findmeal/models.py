@@ -7,7 +7,7 @@ class Recipe(models.Model):
     name = models.CharField(max_length=100)
     slug = models.SlugField(default='', editable=False, max_length=100)
     image = models.ImageField(upload_to='recipe')
-    prep_time = models.IntegerField()
+    prep_time = models.DurationField()
     serving = models.IntegerField()
     rating = models.DecimalField(max_digits=3, decimal_places=2, null=True, blank=True, default=0)
     rate_count = models.IntegerField(null=True, blank=True, default=0)
