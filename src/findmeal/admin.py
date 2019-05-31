@@ -2,7 +2,6 @@ from django.contrib import admin
 
 from .models import Recipe, RecipeStep, RecipeIngredient, Ingredient, IngredientType
 
-# Register your models here.
 
 class RecipeIngredientInline(admin.TabularInline):
     model = RecipeIngredient
