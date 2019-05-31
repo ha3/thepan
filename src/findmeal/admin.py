@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import Recipe, RecipeStep, RecipeIngredient, Ingredient, IngredientType
-
+from .widgets import DurationInput
 
 class RecipeIngredientInline(admin.TabularInline):
     model = RecipeIngredient
@@ -14,6 +14,9 @@ class RecipeStepInline(admin.StackedInline):
 
 class RecipeAdmin(admin.ModelAdmin):
     inlines = [RecipeStepInline, RecipeIngredientInline]
+    formfield_overrides = {
+        models.DurationField: {'widget': DurationInput},
+    }
 
 
 admin.site.register(Recipe, RecipeAdmin)
