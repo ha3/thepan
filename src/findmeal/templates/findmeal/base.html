@@ -1,4 +1,5 @@
 {% load static %}
+{% load utilities %}
 <!doctype html>
 <html>
   <head>
@@ -32,10 +33,10 @@
     <header>
       <div class="container">
         <nav class="nav nav-pills flex-column flex-sm-row">
-          <a class="flex-sm-fill text-sm-center nav-link {{ home_page }}" href="{% url 'findmeal:index' %}">Home</a>
-          <a class="flex-sm-fill text-sm-center nav-link {% if request.path == '/about/' %}active{% endif %}" href="{% url 'findmeal:about' %}">About</a>
-          <a class="flex-sm-fill text-sm-center nav-link {{ recipes }}" href="{% url 'findmeal:recipes' %}">Recipes</a>
-          <a class="flex-sm-fill text-sm-center nav-link {{ contact }}" href="{% url 'findmeal:contact' %}">Contact Us</a>
+          {% url 'findmeal:index' as url %}<a class="flex-sm-fill text-sm-center nav-link {{ url.active }}" href="{{ url }}">Home</a>
+          {% url 'findmeal:about' as url %}<a class="flex-sm-fill text-sm-center nav-link {{ url.active }}" href="{{ url }}">About</a>
+          {% url 'findmeal:recipes' as url %}<a class="flex-sm-fill text-sm-center nav-link {{ url.active }}" href="{{ url }}">Recipes</a>
+          {% url 'findmeal:contact' as url %}<a class="flex-sm-fill text-sm-center nav-link {{ url.active }}" href="{{ url }}">Contact Us</a>
         </nav>
       </div>
     </header>

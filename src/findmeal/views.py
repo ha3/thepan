@@ -10,11 +10,6 @@ from .forms import ContactForm
 class IndexView(generic.TemplateView):
     template_name = 'findmeal/index.html'
 
-    def get_context_data(self, **kwargs):
-        data = super().get_context_data(**kwargs)
-        data['home_page'] = 'active'
-        return data
-
 
 class DetailView(generic.DetailView):
     model = Recipe
@@ -42,11 +37,6 @@ class RecipesView(generic.ListView):
     def get_queryset(self):
         return Recipe.objects.all().order_by('-id')
 
-    def get_context_data(self, **kwargs):
-        data = super().get_context_data(*kwargs)
-        data['recipes'] = 'active'
-        return data
-
 
 class ContactView(View):
     form_class = ContactForm
@@ -66,12 +56,12 @@ class ContactView(View):
             mail.send_mail(subject, message + sender, sender, recipients)
             return HttpResponseRedirect('/about/')
 
-        return render(request, self.template_name, {'form': form, 'contact': 'active'})
+        return render(request, self.template_name, {'form': form})
 
     def get(self, request, *args, **kwargs):
         form = self.form_class()
 
-        return render(request, self.template_name, {'form': form, 'contact': 'active'})
+        return render(request, self.template_name, {'form': form})
 
 
 class ListIngredients(View):
