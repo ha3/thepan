@@ -121,18 +121,20 @@ class SelectTimeWidget(Widget):
         second_val = u"%.2d" % second_val
 
         hour_choices = [("%.2d"%i, "%.2d"%i) for i in self.hours]
-        local_attrs = self.build_attrs({ 'id': self.hour_field % id_ })
+        local_attrs = self.build_attrs({ 'id': self.hour_field % id_, 'title': 'Saat'})
         select_html = Select(choices=hour_choices).render(self.hour_field % name, hour_val, local_attrs)
         output.append(select_html)
 
         minute_choices = [("%.2d"%i, "%.2d"%i) for i in self.minutes]
         local_attrs['id'] = self.minute_field % id_
+        local_attrs['title'] = 'Dakika'
         select_html = Select(choices=minute_choices).render(self.minute_field % name, minute_val, local_attrs)
         output.append(select_html)
 
         if self.use_seconds:
             second_choices = [("%.2d"%i, "%.2d"%i) for i in self.seconds]
             local_attrs['id'] = self.second_field % id_
+            local_attrs['title'] = 'Saniye'
             select_html = Select(choices=second_choices).render(self.second_field % name, second_val, local_attrs)
             output.append(select_html)
 
