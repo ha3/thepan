@@ -14,7 +14,7 @@ class RecipeStepInline(admin.StackedInline):
 class RecipeAdmin(admin.ModelAdmin):
     inlines = [RecipeStepInline, RecipeIngredientInline]
     formfield_overrides = {
-        models.DurationField: {'widget': SelectTimeWidget(use_seconds=False)},
+        models.DurationField: {'widget': SelectTimeWidget(minute_step=5, use_seconds=False)},
     }
 
 
