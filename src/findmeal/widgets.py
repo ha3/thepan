@@ -1,3 +1,5 @@
+# Original from: http://bradmontgomery.blogspot.gr/2008/11/extending-djangos-multiwidget.html
+
 import re
 
 from django.forms.widgets import Widget, Select
