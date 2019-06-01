@@ -1,7 +1,7 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
-from django.core.mail import send_mail
+from django.core import mail, serializers
 
 from .models import Recipe, Ingredient, RecipeIngredient
 from .forms import ContactForm
@@ -29,7 +29,7 @@ class SearchView(generic.ListView):
     def get_queryset(self):
         ingredients = self.request.GET.getlist('i')
 
-        ingredient_ids = [Ingredient.objects.get(name__iexact=ingredient) for ingredient in ingredients]
+        ingredient_ids = Ingredient.objects.filter(id__in=ingredients)
         recipe_ids = RecipeIngredient.objects.filter(ingredient__in=ingredient_ids).values_list('recipe', flat=True).distinct()
 
         return Recipe.objects.filter(id__in=recipe_ids)
@@ -63,7 +63,7 @@ class ContactView(View):
 
             recipients = ['h.ozdemir@yandex.com']
 
-            send_mail(subject, message + sender, sender, recipients)
+            mail.send_mail(subject, message + sender, sender, recipients)
             return HttpResponseRedirect('/about/')
 
         return render(request, self.template_name, {'form': form, 'contact': 'active'})
@@ -79,8 +79,8 @@ class ListIngredients(View):
         if request.is_ajax():
             name = request.POST['name'].capitalize()
 
-            ingredients = Ingredient.objects.filter(name__icontains=name)
-            return JsonResponse([ingredient.name for ingredient in ingredients], safe=False)
+            response = serializers.serialize("json", Ingredient.objects.filter(name__icontains=name), fields=('pk','name'))
+            return JsonResponse(response, safe=False)
 
 
 def rate(request, recipe_id):

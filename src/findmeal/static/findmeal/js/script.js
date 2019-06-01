@@ -68,7 +68,7 @@ $(document).ready(function() {
     }
   });
 
-  function generateItem(ingredientName) {
+  function generateItem(ingredientId, ingredientName) {
     if(pan.includes(ingredientName) == false) {
       pan.push(ingredientName);
 
@@ -83,7 +83,7 @@ $(document).ready(function() {
             $.el('p', {'class': 'card-text'}).text(ingredientName)
           )
           .append(
-            $.el('input', {'type': 'hidden', 'name': 'i', 'class': 'ingredient', 'value': ingredientName})
+            $.el('input', {'type': 'hidden', 'name': 'i', 'class': 'ingredient', 'value': ingredientId})
           )
         )
       );
@@ -91,8 +91,9 @@ $(document).ready(function() {
   }
 
   $(document).on("click", "div.autocomplete-item", function() {
-      var ingName = $(this).children("input[type=hidden]").val()
-      generateItem(ingName);
+      var ingId = $(this).children().eq(1).val();
+      var ingName = $(this).children().eq(2).val();
+      generateItem(ingId, ingName);
       $("#search-button").prop("disabled", false);
   });
 
