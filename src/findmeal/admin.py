@@ -1,21 +1,20 @@
 from django.contrib import admin
+from django.db import models
 
 from .models import Recipe, RecipeStep, RecipeIngredient, Ingredient, IngredientType
-from .widgets import DurationInput
+from .widgets import SelectTimeWidget
 
 class RecipeIngredientInline(admin.TabularInline):
     model = RecipeIngredient
-    extra = 3
 
 
 class RecipeStepInline(admin.StackedInline):
     model = RecipeStep
-    extra = 3
 
 class RecipeAdmin(admin.ModelAdmin):
     inlines = [RecipeStepInline, RecipeIngredientInline]
     formfield_overrides = {
-        models.DurationField: {'widget': DurationInput},
+        models.DurationField: {'widget': SelectTimeWidget(use_seconds=False)},
     }
 
 

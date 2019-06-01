@@ -29,10 +29,15 @@ class Recipe(models.Model):
         return reverse('findmeal:detail', kwargs=kwargs)
 
     def show_prep_time(self):
-        hours = self.prep_time // 60
-        minutes = self.prep_time % 60
+        seconds = self.prep_time.seconds
 
-        if minutes == 0: # Check if it is a full hour
+        minutes = seconds // 60
+        seconds = seconds % 60
+
+        hours = minutes // 60
+        minutes = minutes % 60
+
+        if minutes == 0:
             return str(hours) + ' saat'
         elif minutes > 60:
             return str(hours) + ' saat ' + str(minutes) + ' dakika'
