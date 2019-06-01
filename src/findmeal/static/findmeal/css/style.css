@@ -117,3 +117,9 @@ footer {
 .rate-hover-layer {
   color: orange;
 }
+
+
+/* Contact page styling */
+.asteriskField {
+  color: red;
+}
