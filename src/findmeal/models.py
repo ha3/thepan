@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-
+from django.utils.dateparse import parse_duration
 
 class Recipe(models.Model):
     name = models.CharField(max_length=100)
@@ -28,14 +28,20 @@ class Recipe(models.Model):
 
         return reverse('findmeal:detail', kwargs=kwargs)
 
-    def show_prep_time(self):
-        hours = self.prep_time // 60
-        minutes = self.prep_time % 60
+    def display_prep_time(self):
+        duration = parse_duration(str(self.prep_time))
 
-        if minutes == 0: # Check if it is a full hour
-            return str(hours) + ' saat'
-        elif minutes > 60:
-            return str(hours) + ' saat ' + str(minutes) + ' dakika'
+        seconds = duration.seconds
+
+        minutes = seconds // 60
+        hours = minutes // 60
+        minutes %= 60
+
+        if hours > 0:
+            if minutes == 0:
+                return str(hours) + ' saat'
+            else:
+                return str(hours) + ' saat ' + str(minutes) + ' dakika'
         else:
             return str(minutes) + ' dakika'
 
