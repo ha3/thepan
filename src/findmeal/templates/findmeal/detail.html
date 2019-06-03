@@ -19,7 +19,9 @@
           <li class="list-group-item"><strong>Cost:</strong>   $$$</li>
           <li class="list-group-item"><strong>Servings:</strong>   {{ recipe.serving }}</li>
           <li class="list-group-item"><strong>Ratings:</strong>
-            <div class="rate"></div>
+            <form action="{% url 'findmeal:rate' recipe.id %}" method="post" class="rate">
+              {% csrf_token %}
+            </form>
           </li>
           <li class="list-group-item"><strong>Calories:</strong>   {{ recipe.calorie }}</li>
         </ul>

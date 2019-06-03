@@ -4,7 +4,8 @@
 
 {% block content %}
 <div class="row">
-  <form autocomplete="off" id="s-ing">
+  <form autocomplete="off" id="s-ing" method="post" action="{% url 'findmeal:listing' %}">
+    {% csrf_token %}
     <div class="autocomplete" id="otto">
       <input type="text" id="search-ingredient" class="form-control" name="ingredient"
       placeholder="Elindeki malzemeleri yazmaya başla..." aria-label="Malzemeler" aria-describedby="basic-addon2" />
