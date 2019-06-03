@@ -54,8 +54,8 @@ $(document).ready(function() {
         alert("Bir hata oluştu; lütfen daha sonra tekrar deneyin!");
     });
 
-    if (document.getElementById("search-ingredient") != null) {
-        autocomplete(document.getElementById("search-ingredient"));
+    if (document.getElementById("search-ingredient-input") != null) {
+        autocomplete(document.getElementById("search-ingredient-input"));
     }
 
     $.extend({
@@ -72,7 +72,7 @@ $(document).ready(function() {
 
             $("#content").append(
                 $.el('div', {
-                    'class': 'card bg-light ing-item'
+                    'class': 'card bg-light ingredient-item'
                 }).append(
                     $.el('div', {
                         'class': 'card-body position-relative'

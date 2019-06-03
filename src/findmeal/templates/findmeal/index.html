@@ -1,13 +1,13 @@
 {% extends 'findmeal/base.html' %}
 
-{% block title %}{{ block.super }} - Ana Sayfa {% endblock %}
+{% block title %}Ana Sayfa - {{ block.super }}{% endblock %}
 
 {% block content %}
 <div class="row">
-  <form autocomplete="off" id="s-ing" method="post" action="{% url 'findmeal:listing' %}">
+  <form autocomplete="off" id="search-ingredient-form" method="post" action="{% url 'findmeal:listing' %}">
     {% csrf_token %}
-    <div class="autocomplete" id="otto">
-      <input type="text" id="search-ingredient" class="form-control" name="ingredient"
+    <div class="autocomplete">
+      <input type="text" id="search-ingredient-input" class="form-control" name="ingredient"
       placeholder="Elindeki malzemeleri yazmaya başla..." aria-label="Malzemeler" aria-describedby="basic-addon2" />
     </div>
   </form>
@@ -21,5 +21,4 @@
     <button type="submit" id="search-button" class="btn btn-lg btn-primary" disabled>Tarif Ara</button>
   </div>
 </form>
-
 {% endblock %}
