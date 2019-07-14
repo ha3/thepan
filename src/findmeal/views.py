@@ -53,7 +53,7 @@ class ContactView(View):
 
             recipients = ['h.ozdemir@yandex.com']
 
-            mail.send_mail(subject, message + sender, sender, recipients)
+            mail.send_mail(subject, message, sender, recipients)
             return HttpResponseRedirect('/about/')
 
         return render(request, self.template_name, {'form': form})

@@ -39,11 +39,11 @@ class Recipe(models.Model):
 
         if hours > 0:
             if minutes == 0:
-                return str(hours) + ' saat'
+                return f'{str(hours)} saat'
             else:
-                return str(hours) + ' saat ' + str(minutes) + ' dakika'
+                return f'{str(hours)} saat {str(minutes)} dakika'
         else:
-            return str(minutes) + ' dakika'
+            return f'{str(minutes)} dakika'
 
 
 class IngredientType(models.Model):
