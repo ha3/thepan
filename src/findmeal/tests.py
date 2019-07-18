@@ -76,7 +76,7 @@ class SearchViewTests(TestCase):
         self.ri_one_maple = RecipeIngredient.objects.create(recipe=self.maple, ingredient=self.grape, amount=1)
         self.ri_two_maple = RecipeIngredient.objects.create(recipe=self.maple, ingredient=self.tomato, amount=1)
 
-    def test_no_recipes(self):
+    def test_no_ingredients(self):
         response = self.client.get(reverse('findmeal:search'))
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'No recipes are available.')
