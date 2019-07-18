@@ -22,7 +22,7 @@ class SmartURLNode(URLNode):
         view_name = self.view_name.resolve(context)
         view_name_string = "'%s'" % view_name
 
-        #If it is a hard-coded url, strip it from the commas and assign to context variable
+        #If it is a hard-coded url, strip it from the commas and assign it to context variable
         if len(view_name_string) >= 3 and view_name_string[0] == view_name_string[-1] and view_name_string[0] in ('"', "'") and view_name_string[1] == '/':
             context[self.asvar] = view_name_string[1:-1]
 
@@ -34,13 +34,19 @@ class SmartURLNode(URLNode):
         request = context.get('request', None)
 
         if request:
-            # If the request path matches the url exactly, 'active' attr is set as 'active' on the resolved_url instance.
+            '''
+            If the request path matches the url exactly,
+            'active' attr is set as 'active' on the resolved_url instance.
+            '''
             if resolved_url == request.path:
                 resolved_url.active = 'active'
             else:
                 resolved_url.active = ''
 
-            # If the request path starts with the url, 'active_root' attr is set as 'active' on the resolved_url instance.
+            '''
+            If the request path starts with the url,
+            'active_root' attr is set as 'active' on the resolved_url instance.
+            '''
             if request.path.startswith(resolved_url):
                 resolved_url.active_root = 'active'
             else:
