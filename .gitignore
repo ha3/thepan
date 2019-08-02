@@ -1,6 +1,7 @@
 __pycache__/
 db.sqlite3
-ENV/
+venv/
 media/
 htmlcov/
 .coverage
+.env
