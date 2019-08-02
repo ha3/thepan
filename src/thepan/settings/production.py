@@ -6,9 +6,9 @@ load_dotenv(os.path.join(os.path.dirname(os.path.dirname(__file__)), '.env'))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'thepan',
-        'USER': 'hakan',
-        'PASSWORD': 'rd2TH6br*',
+        'NAME': os.environ['DB_NAME'],
+        'USER': os.environ['DB_USER'],
+        'PASSWORD': os.environ['DB_PASSWORD'],
         'HOST': 'localhost',
         'PORT': '',
     }
