@@ -16,6 +16,18 @@ class DetailView(generic.DetailView):
     template_name = 'findmeal/detail.html'
     query_pk_and_slug = True
 
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        context = self.get_context_data(object=self.object)
+
+        if self.request.GET:
+            json = self.request.GET['json']
+
+            if json:
+                data = serializers.serialize("json", [ self.object, ])
+                return JsonResponse(data[1:-1], safe=False)
+
+        return self.render_to_response(context)
 
 class SearchView(generic.ListView):
     template_name = 'findmeal/search.html'
