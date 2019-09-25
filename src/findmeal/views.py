@@ -6,7 +6,7 @@ from rest_framework.generics import RetrieveAPIView, ListAPIView
 
 from .models import Recipe, Ingredient, RecipeIngredient
 from .forms import ContactForm
-from .serializers import DetailViewSerializer, RecipesViewSerializer
+from .serializers import DetailViewSerializer, ListRecipesSerializer
 
 class IndexView(generic.TemplateView):
     template_name = 'findmeal/index.html'
@@ -17,9 +17,8 @@ class DetailView(RetrieveAPIView):
     serializer_class = DetailViewSerializer
 
 
-class SearchView(generic.ListView):
-    template_name = 'findmeal/search.html'
-    context_object_name = 'recipe_list'
+class SearchView(ListAPIView):
+    serializer_class = RecipesViewSerializer
 
     def get_queryset(self):
         ingredients = self.request.GET.getlist('i')
@@ -28,7 +27,6 @@ class SearchView(generic.ListView):
         recipe_ids = RecipeIngredient.objects.filter(ingredient__in=ingredient_ids).values_list('recipe', flat=True).distinct()
 
         return Recipe.objects.filter(id__in=recipe_ids)
-
 
 class RecipesView(ListAPIView):
     queryset = Recipe.objects.all().order_by('-id')
