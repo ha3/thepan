@@ -23,7 +23,7 @@ class DetailViewSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class RecipesViewSerializer(serializers.ModelSerializer):
+class ListRecipesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = ['id', 'name', 'slug', 'image', 'prep_time', 'serving', 'calorie']
