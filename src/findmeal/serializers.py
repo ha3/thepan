@@ -8,6 +8,7 @@ class IngredientSerializer(serializers.RelatedField):
         i['amount'] = value.amount
         return i
 
+
 class DetailViewSerializer(serializers.ModelSerializer):
     ingredients = IngredientSerializer(many=True, read_only=True)
 
@@ -20,3 +21,9 @@ class DetailViewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Recipe
         fields = '__all__'
+
+
+class RecipesViewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recipe
+        fields = ['id', 'name', 'slug', 'image', 'prep_time', 'serving', 'calorie']
