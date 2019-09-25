@@ -1,33 +1,22 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
+from rest_framework.generics import RetrieveAPIView
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.core import mail, serializers
 
 from .models import Recipe, Ingredient, RecipeIngredient
 from .forms import ContactForm
 
+from .serializers import DetailViewSerializer
 
 class IndexView(generic.TemplateView):
     template_name = 'findmeal/index.html'
 
 
-class DetailView(generic.DetailView):
-    model = Recipe
-    template_name = 'findmeal/detail.html'
-    query_pk_and_slug = True
+class DetailView(RetrieveAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = DetailViewSerializer
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        context = self.get_context_data(object=self.object)
-
-        if self.request.GET:
-            json = self.request.GET['json']
-
-            if json:
-                data = serializers.serialize("json", [ self.object, ])
-                return JsonResponse(data[1:-1], safe=False)
-
-        return self.render_to_response(context)
 
 class SearchView(generic.ListView):
     template_name = 'findmeal/search.html'
