@@ -1,13 +1,12 @@
 from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
-from rest_framework.generics import RetrieveAPIView
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.core import mail, serializers
+from rest_framework.generics import RetrieveAPIView, ListAPIView
 
 from .models import Recipe, Ingredient, RecipeIngredient
 from .forms import ContactForm
-
-from .serializers import DetailViewSerializer
+from .serializers import DetailViewSerializer, RecipesViewSerializer
 
 class IndexView(generic.TemplateView):
     template_name = 'findmeal/index.html'
@@ -31,12 +30,9 @@ class SearchView(generic.ListView):
         return Recipe.objects.filter(id__in=recipe_ids)
 
 
-class RecipesView(generic.ListView):
-    template_name = 'findmeal/recipes.html'
-    context_object_name = 'recipes_list'
-
-    def get_queryset(self):
-        return Recipe.objects.all().order_by('-id')
+class RecipesView(ListAPIView):
+    queryset = Recipe.objects.all().order_by('-id')
+    serializer_class = RecipesViewSerializer
 
 
 class ContactView(View):
