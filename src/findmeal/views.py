@@ -2,36 +2,24 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.core import mail, serializers
+from rest_framework.generics import RetrieveAPIView, ListAPIView, UpdateAPIView
+from rest_framework.response import Response
 
 from .models import Recipe, Ingredient, RecipeIngredient
 from .forms import ContactForm
-
+from .serializers import DetailViewSerializer, ListRecipesSerializer, ListIngredientsSerializer, RateRecipeSerializer
 
 class IndexView(generic.TemplateView):
     template_name = 'findmeal/index.html'
 
 
-class DetailView(generic.DetailView):
-    model = Recipe
-    template_name = 'findmeal/detail.html'
-    query_pk_and_slug = True
+class DetailView(RetrieveAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = DetailViewSerializer
 
-    def get(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        context = self.get_context_data(object=self.object)
 
-        if self.request.GET:
-            json = self.request.GET['json']
-
-            if json:
-                data = serializers.serialize("json", [ self.object, ])
-                return JsonResponse(data[1:-1], safe=False)
-
-        return self.render_to_response(context)
-
-class SearchView(generic.ListView):
-    template_name = 'findmeal/search.html'
-    context_object_name = 'recipe_list'
+class SearchView(ListAPIView):
+    serializer_class = ListRecipesSerializer
 
     def get_queryset(self):
         ingredients = self.request.GET.getlist('i')
@@ -42,12 +30,9 @@ class SearchView(generic.ListView):
         return Recipe.objects.filter(id__in=recipe_ids)
 
 
-class RecipesView(generic.ListView):
-    template_name = 'findmeal/recipes.html'
-    context_object_name = 'recipes_list'
-
-    def get_queryset(self):
-        return Recipe.objects.all().order_by('-id')
+class RecipesView(ListAPIView):
+    queryset = Recipe.objects.all().order_by('-id')
+    serializer_class = ListRecipesSerializer
 
 
 class ContactView(View):
@@ -76,22 +61,25 @@ class ContactView(View):
         return render(request, self.template_name, {'form': form})
 
 
-class ListIngredients(View):
-    def post(self, request):
-        if request.is_ajax():
-            name = request.POST['name'].capitalize()
+class ListIngredients(ListAPIView):
+    serializer_class = ListIngredientsSerializer
 
-            response = serializers.serialize("json", Ingredient.objects.filter(name__icontains=name), fields=('pk','name'))
-            return JsonResponse(response, safe=False)
+    def get_queryset(self):
+        name = self.request.GET.get('name').capitalize()
+        response = Ingredient.objects.filter(name__icontains=name)
+
+        return response
 
 
-def rate(request, recipe_id):
-    if request.is_ajax():
-        recipe = get_object_or_404(Recipe, pk=recipe_id)
-        rating = int(request.POST['value'])
+class RateRecipeView(UpdateAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = RateRecipeSerializer
 
-        recipe.rating = (recipe.rating * recipe.rate_count + rating) / (recipe.rate_count + 1)
-        recipe.rate_count += 1
-        recipe.save()
+    def patch(self, request, *args, **kwargs):
+        instance = self.get_object()
 
-        return HttpResponse(recipe.rating)
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
