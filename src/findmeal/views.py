@@ -2,12 +2,12 @@ from django.shortcuts import render, get_object_or_404
 from django.views import generic, View
 from django.http import HttpResponse, JsonResponse, HttpResponseRedirect
 from django.core import mail, serializers
-from rest_framework.generics import RetrieveAPIView, ListAPIView
-from rest_framework.decorators import api_view
+from rest_framework.generics import RetrieveAPIView, ListAPIView, UpdateAPIView
+from rest_framework.response import Response
 
 from .models import Recipe, Ingredient, RecipeIngredient
 from .forms import ContactForm
-from .serializers import DetailViewSerializer, ListRecipesSerializer, ListIngredientsSerializer
+from .serializers import DetailViewSerializer, ListRecipesSerializer, ListIngredientsSerializer, RateRecipeSerializer
 
 class IndexView(generic.TemplateView):
     template_name = 'findmeal/index.html'
@@ -71,13 +71,15 @@ class ListIngredients(ListAPIView):
         return response
 
 
-def rate(request, recipe_id):
-    if request.is_ajax():
-        recipe = get_object_or_404(Recipe, pk=recipe_id)
-        rating = int(request.POST['value'])
+class RateRecipeView(UpdateAPIView):
+    queryset = Recipe.objects.all()
+    serializer_class = RateRecipeSerializer
 
-        recipe.rating = (recipe.rating * recipe.rate_count + rating) / (recipe.rate_count + 1)
-        recipe.rate_count += 1
-        recipe.save()
+    def patch(self, request, *args, **kwargs):
+        instance = self.get_object()
 
-        return HttpResponse(recipe.rating)
+        serializer = self.get_serializer(instance, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)
