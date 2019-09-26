@@ -4,7 +4,7 @@
 
 {% block content %}
 <div class="row">
-  <form autocomplete="off" id="search-ingredient-form" method="post" action="{% url 'findmeal:listing' %}">
+  <form autocomplete="off" id="search-ingredient-form" method="post" action="{% url 'findmeal:list' %}">
     {% csrf_token %}
     <div class="autocomplete">
       <input type="text" id="search-ingredient-input" class="form-control" name="ingredient"
