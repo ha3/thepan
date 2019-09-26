@@ -33,3 +33,17 @@ class ListIngredientsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Ingredient
         fields = ['id', 'name']
+
+
+class RateRecipeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Recipe
+        fields = ['rating']
+
+    def update(self, instance, validated_data):
+        rating = int(validated_data.get('rating'))
+        instance.rating = (instance.rating * instance.rate_count + rating) / (instance.rate_count + 1)
+        instance.rate_count += 1
+        instance.save()
+
+        return instance
